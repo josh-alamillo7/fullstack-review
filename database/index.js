@@ -38,7 +38,7 @@ let save = (repos) => {
   		console.log("user saved!")
   		})
   	}
-  }
+  })
 
 /*
   for (var i = 0; i < repos.length; i++) {

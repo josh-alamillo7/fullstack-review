@@ -14,7 +14,16 @@ let getReposByUsername = (input) => {
     }
   };
 
-  request(options)
+  request(options, function(err, data, callback) {
+    if (err) {
+      throw err
+    }
+    else {
+      callback(JSON.parse(data.body))
+    }
+  })
+
+  /*
     .then(function (response) {
       console.log("got data!")
       console.log(response)
@@ -22,7 +31,8 @@ let getReposByUsername = (input) => {
     .catch(function (err) {
       console.log("something went wrong.")
     })
+  */
 
 }
 
-module.exports.getReposByUsername = getReposByUsername;
+module.exports = getReposByUsername;
