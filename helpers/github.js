@@ -24,16 +24,6 @@ let getReposByUsername = (input, callback) => {
     }
   })
 
-  /*
-    .then(function (response) {
-      console.log("got data!")
-      console.log(response)
-    })
-    .catch(function (err) {
-      console.log("something went wrong.")
-    })
-  */
-
 }
 
 module.exports = getReposByUsername;

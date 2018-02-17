@@ -26,7 +26,7 @@ let save = (repos) => {
   // the MongoDB
 
   //save instance of the new user to the database.
-
+  console.log(repos[0].owner)
   //add the user to the user database
   User.find({id: repos[0].owner.id}, function(err, data) {
   	if (err) {
@@ -41,15 +41,17 @@ let save = (repos) => {
   	}
   })
 
-  //add each repo to the repo database, and add it to its user array
   
+  //Use Id's to check which repo's already exist
   var allIds = repos.map(repo => {
     return repo.id
   })
 
-  console.log(allIds)
+  //this repo will keep track of the repo's that belong to this user.
   var allRepos = []
 
+  //for each repo, check if its id is already in the database by comparing it to "allIds"
+  //if it's not already in the database, save it and push it into all repo's
   for (var i = 0; i < repos.length; i++) {
     if (!allIds.includes(repos[i].id)) {
       let repo = new Repo({id: repos[i].id, url: repos[i].html_url, popularity: repos[i].forks})
@@ -58,12 +60,17 @@ let save = (repos) => {
         if (err) {
           return console.error(err)
         }
-        console.log(repo.id)
         console.log("repo saved!")
       })
     }
   }
 
+  console.log("OWNER:", repos[0].owner)
+  console.log("ID:", repos[0].owner.id)
+  User.find(function(err, data) {
+    console.log(data)
+  })
+  //if the repo is not already in the user's repo array, add it.
   User.find({id: repos[0].owner.id}, function(err, data) {
     if (err) {
       throw err
@@ -71,14 +78,16 @@ let save = (repos) => {
     else {
       //data = that user
       for (var i = 0; i < repos.length; i++) {
-        if (!data[0].repos.includes(repos[i])) {
+        if (data[0] && !data[0].repos.includes(repos[i])) {
           data[0].repos.push(repos[i])
-          console.log(data[0].repos.length)
         }
       }
-      console.log("THE USER'S REPO'S:", data[0].repos)
+      
     }
+    console.log(i + " REPOS DOWNLOADED")
   })
 }
 
-module.exports = save;
+module.exports.save = save;
+module.exports.User = User;
+module.exports.Repo = Repo;
