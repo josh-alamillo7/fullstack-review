@@ -27,18 +27,30 @@ let save = (repos) => {
 
   //save instance of the new user to the database.
 
-  User.find({id: repos[i].owner.id}, function(err, data) {
+  //add the user to the user database
+  User.find({id: repos[0].owner.id}, function(err, data) {
   	if (err) {
   		throw err
   	}
-  	else if (data.length > 0) {
-  		let user = new User({id: repos[i].owner.id, login: repos[i].owner.login, repos: []})
+  	else if (data.length === 0) {
+  		let user = new User({id: repos[0].owner.id, login: repos[0].owner.login, repos: []})
   		user.save(function(err, user) {
-  		if (err) return console.error(err);
-  		console.log("user saved!")
+  		  if (err) {return console.error(err)};
+  		  console.log("user saved!")
   		})
   	}
   })
+
+  //add each repo to the repo database, and add it to its user array
+
+  console.log(repos[0].id)
+  console.log(repos[14].id)
+  /*
+  for (var i = 0; i < repos.length; i++) {
+    Repo.find({id: repos[i].id})
+  }
+  */
+
 
 /*
   for (var i = 0; i < repos.length; i++) {
@@ -50,4 +62,4 @@ let save = (repos) => {
 
 }
 
-module.exports.save = save;
+module.exports = save;

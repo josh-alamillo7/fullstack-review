@@ -2,6 +2,7 @@ const express = require('express');
 let app = express();
 let bodyParser = require('body-parser');
 let getReposByUsername = require('../helpers/github.js');
+let databaseSave = require('../database/index.js')
 
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json())
@@ -9,7 +10,8 @@ app.use(bodyParser.json())
 app.post('/repos', function (req, res) {
 
   console.log(getReposByUsername)
-  getReposByUsername(req.body.user)
+  getReposByUsername(req.body.user, databaseSave)
+
 	res.status(200).send('it went through')
 	
   // TODO - your code here!
