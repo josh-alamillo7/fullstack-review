@@ -23,7 +23,6 @@ class App extends React.Component {
       data: JSON.stringify({'user': term}),
       contentType: 'application/json',
       success: function(data) {
-        //data = the response
         console.log('query sent!')
       },
       failure: function() {
