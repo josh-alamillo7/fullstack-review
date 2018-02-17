@@ -28,9 +28,13 @@ app.get('/repos', function (req, res) {
       console.log(err)
     }
     console.log("DATA:", data)
+    data.sort(function(repoOne, repoTwo) {
+      return (repoTwo.popularity - repoOne.popularity)
+    })
+    res.status(200).send(data.slice(0, 25))
+
   })
 
-  res.status(200).send('hey what u want')
 });
 
 let port = 1128;

@@ -43,33 +43,34 @@ let save = (repos) => {
 
   
   //Use Id's to check which repo's already exist
-  var allIds = repos.map(repo => {
-    return repo.id
-  })
+  Repo.find(function(err, data) {
+    var allIds = data.map(repo => {
+      return repo.id
+    })
 
-  //this repo will keep track of the repo's that belong to this user.
-  var allRepos = []
-
-  //for each repo, check if its id is already in the database by comparing it to "allIds"
-  //if it's not already in the database, save it and push it into all repo's
-  for (var i = 0; i < repos.length; i++) {
+    // var allRepos = []
+    for (var i = 0; i < repos.length; i++) {
     if (!allIds.includes(repos[i].id)) {
       let repo = new Repo({id: repos[i].id, url: repos[i].html_url, popularity: repos[i].forks})
-      allRepos.push(repo)
+      //allRepos.push(repo)
       repo.save(function(err, repo) {
         if (err) {
           return console.error(err)
         }
         console.log("repo saved!")
-      })
+        })
+      }
     }
-  }
-
-  console.log("OWNER:", repos[0].owner)
-  console.log("ID:", repos[0].owner.id)
-  User.find(function(err, data) {
-    console.log(data)
   })
+
+
+  //this repo will keep track of the repo's that belong to this user.
+  
+
+  //for each repo, check if its id is already in the database by comparing it to "allIds"
+  //if it's not already in the database, save it and push it into all repo's
+  
+
   //if the repo is not already in the user's repo array, add it.
   User.find({id: repos[0].owner.id}, function(err, data) {
     if (err) {
