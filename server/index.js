@@ -23,8 +23,11 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  Repo.find(function(err, data) {
-    console.log(data)
+  database.Repo.find(function(err, data) {
+    if (err) {
+      console.log(err)
+    }
+    console.log("DATA:", data)
   })
 
   res.status(200).send('hey what u want')
