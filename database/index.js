@@ -42,24 +42,43 @@ let save = (repos) => {
   })
 
   //add each repo to the repo database, and add it to its user array
+  
+  var allIds = repos.map(repo => {
+    return repo.id
+  })
 
-  console.log(repos[0].id)
-  console.log(repos[14].id)
-  /*
+  console.log(allIds)
+  var allRepos = []
+
   for (var i = 0; i < repos.length; i++) {
-    Repo.find({id: repos[i].id})
+    if (!allIds.includes(repos[i].id)) {
+      let repo = new Repo({id: repos[i].id, url: repos[i].html_url, popularity: repos[i].forks})
+      allRepos.push(repo)
+      repo.save(function(err, repo) {
+        if (err) {
+          return console.error(err)
+        }
+        console.log(repo.id)
+        console.log("repo saved!")
+      })
+    }
   }
-  */
 
-
-/*
-  for (var i = 0; i < repos.length; i++) {
-  	let repo = new Repo({id: repos[i].id, url: repos[i].html_url, popularity: repos[i].forks})
-  	user.repos.push(repo)
-  }
- */
-
-
+  User.find({id: repos[0].owner.id}, function(err, data) {
+    if (err) {
+      throw err
+    }
+    else {
+      //data = that user
+      for (var i = 0; i < repos.length; i++) {
+        if (!data[0].repos.includes(repos[i])) {
+          data[0].repos.push(repos[i])
+          console.log(data[0].repos.length)
+        }
+      }
+      console.log("THE USER'S REPO'S:", data[0].repos)
+    }
+  })
 }
 
 module.exports = save;
