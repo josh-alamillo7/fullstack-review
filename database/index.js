@@ -26,7 +26,9 @@ let save = (repos) => {
   // the MongoDB
 
   //save instance of the new user to the database.
-  console.log(repos[0].owner)
+  if (!repos.length) {
+    return
+  }
   //add the user to the user database
   User.find({id: repos[0].owner.id}, function(err, data) {
   	if (err) {

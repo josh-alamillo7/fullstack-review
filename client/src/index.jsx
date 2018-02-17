@@ -16,6 +16,7 @@ class App extends React.Component {
   }
 
   search (term) {
+    const app = this
     console.log(`${term} was searched`);
     $.ajax({
       url: '/repos',
@@ -24,6 +25,7 @@ class App extends React.Component {
       contentType: 'application/json',
       success: function(data) {
         console.log('query sent!')
+        app.getTopRepos()
       },
       failure: function() {
         console.log('did not send')
