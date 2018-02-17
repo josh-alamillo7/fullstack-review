@@ -11,6 +11,7 @@ class App extends React.Component {
       repos: []
     }
     this.search = this.search.bind(this)
+    this.getTopRepos()
 
   }
 
@@ -22,7 +23,6 @@ class App extends React.Component {
       data: JSON.stringify({'user': term}),
       contentType: 'application/json',
       success: function(data) {
-
         //data = the response
         console.log('query sent!')
       },
@@ -30,6 +30,22 @@ class App extends React.Component {
         console.log('did not send')
       }
     });
+  }
+
+  getTopRepos() {
+    const app = this
+    $.ajax({
+      url: '/repos',
+      type: 'GET',
+      success: function(data) {
+        app.setState({repos: data})
+        console.log('we got them')
+        console.log(data)
+      },
+      failure: function() {
+        console.log('u failed')
+      }
+    })
   }
 
   render () {
